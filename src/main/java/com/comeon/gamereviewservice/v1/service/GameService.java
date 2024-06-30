@@ -38,8 +38,12 @@ public class GameService {
     }
 
     public GameResponse getGameById(Long gameId) {
-        GameEntity gameEntity = gameRepository.findById(gameId).orElseThrow(() -> new ResourceNotFoundException("No game match was found by game id [" + gameId + "]"));
+        GameEntity gameEntity = getGameEntityById(gameId);
         return gameMapper.gameEntityToGameDto(gameEntity);
+    }
+
+    protected GameEntity getGameEntityById(Long gameId) {
+        return gameRepository.findById(gameId).orElseThrow(() -> new ResourceNotFoundException("No game match was found by game id [" + gameId + "]"));
     }
 
     /**

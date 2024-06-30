@@ -24,6 +24,14 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: none
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _audit_log
+            store_data_at_delete: true
+            revision_field_name: rev
+            revision_type_field_name: revtype
+
 
 
 #OpenAPI & Swagger Config

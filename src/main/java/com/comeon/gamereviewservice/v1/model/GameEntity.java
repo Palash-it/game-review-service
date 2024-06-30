@@ -7,11 +7,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "games", uniqueConstraints = @UniqueConstraint(columnNames = {"title"}))
+@Audited
+@EntityListeners(AuditingEntityListener.class)
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Data
@@ -31,8 +36,11 @@ public class GameEntity {
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
+    @OneToMany(mappedBy = "game", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<PlayerGameInteractionEntity> playerGameActions;
+
     @PrePersist
-    void prePersist(){
+    void prePersist() {
         this.setStatus(EntityStatus.ACTIVE);
     }
 }

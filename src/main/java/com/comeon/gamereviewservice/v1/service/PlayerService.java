@@ -38,8 +38,12 @@ public class PlayerService {
     }
 
     public PlayerResponse getPlayerById(Long playerId) {
-        PlayerEntity playerEntity = playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException("No player match was found by player id [" + playerId + "]"));
+        PlayerEntity playerEntity = getPlayerEntityById(playerId);
         return playerMapper.playerEntityToPlayerDto(playerEntity);
+    }
+
+    protected PlayerEntity getPlayerEntityById(Long playerId) {
+        return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException("No player match was found by player id [" + playerId + "]"));
     }
 
     /**

@@ -1,13 +1,11 @@
 package com.comeon.gamereviewservice.v1.repository;
 
-import com.comeon.gamereviewservice.v1.dtos.MostLovedGameResponse;
 import com.comeon.gamereviewservice.v1.model.GameEntity;
 import com.comeon.gamereviewservice.v1.model.PlayerEntity;
 import com.comeon.gamereviewservice.v1.model.PlayerGameInteractionEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

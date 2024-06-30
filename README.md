@@ -40,11 +40,12 @@ This application will be running on port 8080 and is using H2 in Memory database
 - username: sa
 - password: 
 
-
+## In project classpath there is schema.sql and data.sql database file. 
 
 ### Maven Commands
 
 # To start the application here are some maven commands
+- [install dependency] mvn clean install
 - [start] mvn spring-boot:run
 - [test] mvn clean test
 
@@ -55,4 +56,10 @@ If you manually switch to a different parent and actually want the inheritance, 
 
 ### API Documentations
 - http://localhost:8080/swagger-ui/index.html
+
+
+### Run using docker
+## Build the docker image from dockerfile and run the container
+- docker build -t game-review-service .
+- docker run -d -p 8080:8080 game-review-service
 

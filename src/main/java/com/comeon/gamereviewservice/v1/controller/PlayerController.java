@@ -1,7 +1,5 @@
 package com.comeon.gamereviewservice.v1.controller;
 
-import com.comeon.gamereviewservice.v1.dtos.GameRequestPayload;
-import com.comeon.gamereviewservice.v1.dtos.GameResponse;
 import com.comeon.gamereviewservice.v1.dtos.PlayerRequestPayload;
 import com.comeon.gamereviewservice.v1.dtos.PlayerResponse;
 import com.comeon.gamereviewservice.v1.service.PlayerService;

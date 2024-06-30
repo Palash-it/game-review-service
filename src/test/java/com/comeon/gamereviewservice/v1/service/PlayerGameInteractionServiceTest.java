@@ -1,7 +1,11 @@
 package com.comeon.gamereviewservice.v1.service;
 
+import com.comeon.gamereviewservice.enums.EntityStatus;
 import com.comeon.gamereviewservice.exceptions.ValidationException;
+import com.comeon.gamereviewservice.v1.dtos.GameResponse;
 import com.comeon.gamereviewservice.v1.dtos.PlayerGameInteractionRequestPayload;
+import com.comeon.gamereviewservice.v1.mapper.GameMapper;
+import com.comeon.gamereviewservice.v1.mapper.GameMapperImpl;
 import com.comeon.gamereviewservice.v1.model.GameEntity;
 import com.comeon.gamereviewservice.v1.model.PlayerEntity;
 import com.comeon.gamereviewservice.v1.model.PlayerGameInteractionEntity;
@@ -11,8 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +37,9 @@ public class PlayerGameInteractionServiceTest {
 
     @InjectMocks
     private PlayerGameInteractionService service;
+
+    @Spy
+    private GameMapper gameMapper = new GameMapperImpl();
 
 
     @Test
@@ -130,6 +139,21 @@ public class PlayerGameInteractionServiceTest {
 
         service.unLoveGame(payload);
         verify(playerGameInteractionRepository, times(1)).save(playerGameInteractionEntity);
+    }
+
+
+    @Test
+    @DisplayName("Get loved games list by player id test. If a played does not have any loved game then it should return a empty list")
+    void getLovedGamesByPlayerIdTest() {
+        Long playerId = 10l;
+        PlayerEntity playerEntity = PlayerEntity.builder().playerId(playerId).build();
+        when(playerService.getPlayerEntityById(playerId)).thenReturn(playerEntity);
+        PlayerGameInteractionEntity game1 = PlayerGameInteractionEntity.builder().player(playerEntity).game(GameEntity.builder().gameId(1l).status(EntityStatus.ACTIVE).title("Call of duty").build()).build();
+        List<PlayerGameInteractionEntity> playerGameInteractionEntityList = List.of(game1);
+        when(playerGameInteractionRepository.findByPlayerAndIsLovedTrue(playerEntity)).thenReturn(playerGameInteractionEntityList);
+        List<GameResponse> lovedGames = service.getLovedGamesByPlayerId(playerId);
+        assertEquals(1, lovedGames.size());
+        assertEquals("Call of duty", lovedGames.get(0).getGameTitle());
     }
 
 }

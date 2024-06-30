@@ -4,6 +4,7 @@ import com.comeon.gamereviewservice.exceptions.ResourceNotFoundException;
 import com.comeon.gamereviewservice.exceptions.ValidationException;
 import com.comeon.gamereviewservice.v1.dtos.GameRequestPayload;
 import com.comeon.gamereviewservice.v1.dtos.GameResponse;
+import com.comeon.gamereviewservice.v1.mapper.GameMapper;
 import com.comeon.gamereviewservice.v1.mapper.GameMapperImpl;
 import com.comeon.gamereviewservice.v1.model.GameEntity;
 import com.comeon.gamereviewservice.v1.repository.GameRepository;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
@@ -30,10 +32,8 @@ public class GameServiceTest {
     @InjectMocks
     private GameService service;
 
-    @BeforeEach
-    public void setUp() {
-        service = new GameService(gameRepository, new GameMapperImpl());
-    }
+    @Spy
+    private GameMapper gameMapper = new GameMapperImpl();
 
     @Test
     @DisplayName("Taking pageNo, pageSize should return GameResponse Object List")

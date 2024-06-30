@@ -10,13 +10,13 @@ We want you to implement a game love service that keeps track of the games that 
 - The player that loved the game.
 - The game it loved.
 ## It should be possible to unlove games. [Here is the endpoint /api/v1/player-game-interaction/unlove-game]
-It should be possible to fetch all games a player have loved.
-It should be possible to fetch the most loved games.
-The list should contain the x top loved games, where x should be possible to define in every request.
-Each item in this list should contain:
-The game identifier.
-Number of loves the game has.
-It should be possible to fetch all games.
+## It should be possible to fetch all games a player have loved. [Here is the endpoint /api/v1/player-game-interaction/{playerId}/loved-games]
+## It should be possible to fetch the most loved games. [Here is the endpoint /api/v1/player-game-interaction/most-loved-games?limit=10]
+- The list should contain the x top loved games, where x should be possible to define in every request.
+- Each item in this list should contain:
+- The game identifier.
+- Number of loves the game has.
+## It should be possible to fetch all games. [Here is the endpoint /api/v1/games?pageNo=0&pageSize=50]
 Deliverables:
 Your submission should contain a Java service based Maven project solution. Avoid sending large attachments in your submission so do a maven clean before submission.
 

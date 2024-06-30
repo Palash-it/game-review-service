@@ -1,14 +1,23 @@
 package com.comeon.gamereviewservice.v1.service;
 
 import com.comeon.gamereviewservice.exceptions.ValidationException;
+import com.comeon.gamereviewservice.v1.dtos.GameResponse;
+import com.comeon.gamereviewservice.v1.dtos.MostLovedGameResponse;
 import com.comeon.gamereviewservice.v1.dtos.PlayerGameInteractionRequestPayload;
+import com.comeon.gamereviewservice.v1.mapper.GameMapper;
 import com.comeon.gamereviewservice.v1.model.GameEntity;
 import com.comeon.gamereviewservice.v1.model.PlayerEntity;
 import com.comeon.gamereviewservice.v1.model.PlayerGameInteractionEntity;
 import com.comeon.gamereviewservice.v1.repository.PlayerGameInteractionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +27,13 @@ public class PlayerGameInteractionService {
     private final PlayerGameInteractionRepository playerGameInteractionRepository;
     private final PlayerService playerService;
     private final GameService gameService;
+    private final GameMapper gameMapper;
 
     /**
      * Make sure this player did not love the game before. If the player loved the game already and try to do same action then throw exception with a clear message
      * If the player unloved the game before and now changed his mind and want to love then update the isLove value from false to true.
      * Is there any duration to change mind to unLove a game after love once? Did not ask for it now
+     *
      * @param payload
      * @return
      */
@@ -49,6 +60,7 @@ public class PlayerGameInteractionService {
      * Make sure this player did not unLove the game before. If the player unLoved the game already and try to do same action then throw exception with a clear message
      * If the player loved the game before and now changed his mind and want to unLove then update the isLove value from true to false.
      * Is there any duration to change mind to unLove a game after love once? Did not ask for it now
+     *
      * @param payload
      * @return
      */
@@ -68,5 +80,28 @@ public class PlayerGameInteractionService {
             playerGameInteractionRepository.save(playerGameInteractionEntity);
             log.info("PlayerId : {}, unLoved gameId : {}", playerGameInteractionEntity.getPlayer().getPlayerId(), playerGameInteractionEntity.getGame().getGameId());
         });
+    }
+
+    public List<GameResponse> getLovedGamesByPlayerId(Long playerId) {
+        PlayerEntity playerEntity = playerService.getPlayerEntityById(playerId);
+        return Optional.ofNullable(playerGameInteractionRepository.findByPlayerAndIsLovedTrue(playerEntity))
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(PlayerGameInteractionEntity::getGame)
+                .map(game -> gameMapper.gameEntityToGameDto(game))
+                .toList();
+    }
+
+    /**
+     * @param limit max number of records should be fetched
+     * @return
+     */
+    public List<MostLovedGameResponse> getMostLovedGames(Integer limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return Optional.ofNullable(playerGameInteractionRepository.getMostLovedGames(pageable)).orElse(Collections.emptyList())
+                .stream().map(obj -> MostLovedGameResponse.builder()
+                        .gameId((Long) obj[0])
+                        .numberOfLoves((Long) obj[1])
+                        .build()).toList();
     }
 }

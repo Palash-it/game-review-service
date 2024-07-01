@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PlayerServiceTest {
+class PlayerServiceTest {
 
     @Mock
     private PlayerRepository playerRepository;
@@ -75,7 +75,8 @@ public class PlayerServiceTest {
     void addNewPlayer_return_validation_exception_when_playerEmail_existTest() {
         String email = "example@example.com";
         when(playerRepository.existsByEmail(email)).thenReturn(true);
-        ValidationException validationException = assertThrows(ValidationException.class, () -> service.addNewPlayer(PlayerRequestPayload.builder().emailAddress(email).build()));
+        PlayerRequestPayload payload = PlayerRequestPayload.builder().emailAddress(email).build();
+        ValidationException validationException = assertThrows(ValidationException.class, () -> service.addNewPlayer(payload));
         assertEquals("Player email [{" + email + "}] is already in use", validationException.getMessage());
     }
 

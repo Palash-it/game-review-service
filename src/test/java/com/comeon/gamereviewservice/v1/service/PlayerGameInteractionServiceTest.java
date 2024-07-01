@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PlayerGameInteractionServiceTest {
+class PlayerGameInteractionServiceTest {
 
     @Mock
     private PlayerGameInteractionRepository playerGameInteractionRepository;

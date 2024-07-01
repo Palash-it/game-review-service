@@ -32,7 +32,7 @@ public class PlayerService {
 
         Slice<PlayerEntity> slicedResult = playerRepository.findBy(paging);
         if (slicedResult.hasContent()) {
-            return slicedResult.getContent().stream().map(playerEntity -> playerMapper.playerEntityToPlayerDto(playerEntity)).toList();
+            return slicedResult.getContent().stream().map(playerMapper::playerEntityToPlayerDto).toList();
         }
         return Collections.emptyList();
     }

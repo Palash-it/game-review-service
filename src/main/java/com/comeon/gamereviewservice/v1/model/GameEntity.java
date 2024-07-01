@@ -2,6 +2,8 @@ package com.comeon.gamereviewservice.v1.model;
 
 import com.comeon.gamereviewservice.enums.EntityStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +30,8 @@ public class GameEntity {
     @Column(name = "game_id")
     private Long gameId;
     @Column(unique = true)
+    @NotNull(message = "Game title is required")
+    @NotBlank(message = "Game title is required")
     private String title;
     private String description;
     @Column(name = "created_at")

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GameServiceTest {
+class GameServiceTest {
 
     @Mock
     private GameRepository gameRepository;
@@ -72,7 +72,8 @@ public class GameServiceTest {
     void addNewGame_return_validation_exception_when_gameTile_existTest() {
         String gameTitle = "call of duty";
         when(gameRepository.existsByTitle(gameTitle)).thenReturn(true);
-        ValidationException validationException = assertThrows(ValidationException.class, () -> service.addNewGame(GameRequestPayload.builder().gameTitle(gameTitle).build()));
+        GameRequestPayload gameRequestPayload = GameRequestPayload.builder().gameTitle(gameTitle).build();
+        ValidationException validationException = assertThrows(ValidationException.class, () -> service.addNewGame(gameRequestPayload));
         assertEquals("Game Title [{" + gameTitle + "}] is already in use", validationException.getMessage());
     }
 }

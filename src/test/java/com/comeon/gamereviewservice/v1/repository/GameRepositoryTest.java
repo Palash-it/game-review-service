@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class GameRepositoryTest {
+class GameRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;

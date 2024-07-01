@@ -32,7 +32,7 @@ public class GameService {
 
         Slice<GameEntity> slicedResult = gameRepository.findBy(paging);
         if (slicedResult.hasContent()) {
-            return slicedResult.getContent().stream().map(gameEntity -> gameMapper.gameEntityToGameDto(gameEntity)).toList();
+            return slicedResult.getContent().stream().map(gameMapper::gameEntityToGameDto).toList();
         }
         return Collections.emptyList();
     }

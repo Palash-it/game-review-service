@@ -47,7 +47,7 @@ public class PlayerController {
 
     @PostMapping
     @Operation(summary = "Create a new Player. Player emailAddress is unique")
-    public ResponseEntity<?> createNewPlayer(@RequestBody @Valid PlayerRequestPayload requestPayload) {
+    public ResponseEntity<URI> createNewPlayer(@RequestBody @Valid PlayerRequestPayload requestPayload) {
         log.info("PostMapping:  v1/players with payload: {}", requestPayload);
         PlayerResponse playerResponse = playerService.addNewPlayer(requestPayload);
         URI location = ServletUriComponentsBuilder

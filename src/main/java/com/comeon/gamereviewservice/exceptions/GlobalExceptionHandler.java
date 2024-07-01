@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorResponse exceptionResponse =
                 new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Resource was not found", ex.getMessage(), request.getDescription(false));
@@ -36,14 +36,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> validationExceptionHandler(ValidationException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> validationExceptionHandler(ValidationException ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorResponse exceptionResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Constraint Validation Failed", ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> globalExceptionHandler(Exception ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         ErrorResponse exceptionResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error!", "", request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);

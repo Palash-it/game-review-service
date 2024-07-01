@@ -38,7 +38,7 @@ public class GameController {
 
     @PostMapping
     @Operation(summary = "Create a new Game. Game title is unique")
-    public ResponseEntity<?> createGame(@RequestBody @Valid GameRequestPayload requestPayload) {
+    public ResponseEntity<URI> createGame(@RequestBody @Valid GameRequestPayload requestPayload) {
         log.info("PostMapping:  v1/games with payload: {}", requestPayload);
         GameResponse gameResponse = gameService.addNewGame(requestPayload);
         URI location = ServletUriComponentsBuilder
